@@ -138,3 +138,8 @@ notificationPopup.classList.remove('show');
 });
 }
 // END NOTIFICATION HANDLER
+// Hide notification on app open
+if (notificationPopup) {
+  notificationPopup.classList.remove('show');
+}
+
