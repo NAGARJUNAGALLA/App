@@ -1,0 +1,405 @@
+<!--
+Project: ClassPlus - Modern UI (Module-wise Code)
+Files included below. Copy each file into your project folder keeping the paths.
+
+Structure:
+/
+  index.html
+  /css/style.css
+  /js/app.js
+  /data/mockdata.js
+
+Open each file block and save accordingly. This project is pure HTML/CSS/JS (no build step) and ready for GitHub Pages.
+-->
+
+<!-- FILE: index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClassPlus — JCV Modern</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- App Shell -->
+  <div id="app" class="app">
+
+    <!-- Header / Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="menuBtn" class="icon-btn" aria-label="menu">☰</button>
+        <h1 class="brand">JCV ClassPlus</h1>
+      </div>
+      <div class="topbar-right">
+        <button id="notifBtn" class="icon-btn" aria-label="notifications">🔔<span id="notifBadge" class="badge hidden">3</span></button>
+        <div id="profileMini" class="profile-mini" onclick="openModule('profile')">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><rect width='100%' height='100%' fill='%230077cc'/><text x='50%' y='55%' font-size='18' fill='white' text-anchor='middle' font-family='Arial'>JG</text></svg>" alt="profile">
+        </div>
+      </div>
+    </header>
+
+    <!-- Side Drawer (Mobile/Small) -->
+    <aside id="sideDrawer" class="side-drawer hidden">
+      <nav>
+        <ul>
+          <li onclick="openModule('home')">Home</li>
+          <li onclick="openModule('subjects')">Subjects</li>
+          <li onclick="openModule('courses')">Courses</li>
+          <li onclick="openModule('tests')">Tests</li>
+          <li onclick="openModule('materials')">Study Material</li>
+          <li onclick="openModule('assignments')">Assignments</li>
+          <li onclick="openModule('progress')">Progress</li>
+          <li onclick="openModule('profile')">Profile</li>
+        </ul>
+      </nav>
+      <div class="drawer-footer">JCV Tuition • Ashok Nagar</div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="mainContent" class="main">
+
+      <!-- LOGIN MODULE -->
+      <section id="module-login" class="module active">
+        <div class="login-card">
+          <h2>Welcome back</h2>
+          <p class="muted">Login to access your courses and progress</p>
+          <input id="loginUsername" placeholder="Username (admin)" />
+          <input id="loginPassword" type="password" placeholder="Password (1234)" />
+          <button class="primary" onclick="login()">Login</button>
+          <div class="login-footer">
+            <small>Demo accounts: admin / 1234</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOME MODULE -->
+      <section id="module-home" class="module">
+        <div class="banner">
+          <div>
+            <h2 id="homeGreeting">Hello, Student 👋</h2>
+            <p id="homeSub">Welcome to JCV ClassPlus — Classes 6-10</p>
+          </div>
+          <div class="profile-card" onclick="openModule('profile')">
+            <div class="avatar">JG</div>
+            <div>
+              <div class="name">J. Galla</div>
+              <div class="meta">Class 10 • Science</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-title">Quick Access</h3>
+        <div class="tiles cp-tiles">
+          <div class="cp-tile big" onclick="openModule('subjects')">
+            <div class="tile-emoji">📚</div>
+            <div class="tile-title">Subjects</div>
+          </div>
+          <div class="cp-tile big" onclick="openModule('courses')">
+            <div class="tile-emoji">🎓</div>
+            <div class="tile-title">Courses</div>
+          </div>
+          <div class="cp-tile big" onclick="openModule('tests')">
+            <div class="tile-emoji">🧪</div>
+            <div class="tile-title">Tests</div>
+          </div>
+          <div class="cp-tile big" onclick="openModule('materials')">
+            <div class="tile-emoji">📘</div>
+            <div class="tile-title">Study Material</div>
+          </div>
+          <div class="cp-tile big" onclick="openModule('assignments')">
+            <div class="tile-emoji">📝</div>
+            <div class="tile-title">Assignments</div>
+          </div>
+          <div class="cp-tile big" onclick="openModule('progress')">
+            <div class="tile-emoji">📊</div>
+            <div class="tile-title">Progress</div>
+          </div>
+        </div>
+
+        <h3 class="section-title">Recent Activity</h3>
+        <div id="recentList" class="list-card">
+          <!-- dynamically filled -->
+        </div>
+
+      </section>
+
+      <!-- SUBJECTS MODULE -->
+      <section id="module-subjects" class="module">
+        <div class="module-header">
+          <h2>Subjects</h2>
+          <input id="subjectSearch" placeholder="Search subjects..." oninput="filterSubjects(this.value)">
+        </div>
+        <div id="subjectsGrid" class="tiles subjects-grid"></div>
+      </section>
+
+      <!-- COURSES MODULE -->
+      <section id="module-courses" class="module">
+        <div class="module-header">
+          <h2>Courses</h2>
+        </div>
+        <div id="coursesList" class="list-card"></div>
+      </section>
+
+      <!-- TESTS MODULE -->
+      <section id="module-tests" class="module">
+        <div class="module-header">
+          <h2>Tests</h2>
+        </div>
+        <div id="testsList" class="list-card"></div>
+      </section>
+
+      <!-- MATERIALS MODULE -->
+      <section id="module-materials" class="module">
+        <div class="module-header">
+          <h2>Study Materials</h2>
+        </div>
+        <div id="materialsList" class="list-card"></div>
+      </section>
+
+      <!-- ASSIGNMENTS MODULE -->
+      <section id="module-assignments" class="module">
+        <div class="module-header">
+          <h2>Assignments</h2>
+        </div>
+        <div id="assignmentsList" class="list-card"></div>
+      </section>
+
+      <!-- PROGRESS MODULE -->
+      <section id="module-progress" class="module">
+        <div class="module-header">
+          <h2>Progress</h2>
+        </div>
+        <div class="progress-cards">
+          <div class="progress-card">
+            <h4>Overall Score</h4>
+            <div class="meter"><div id="overallMeter" class="meter-fill" style="width:0%"></div></div>
+            <div id="overallPercentage">0%</div>
+          </div>
+          <div class="progress-card">
+            <h4>Tests Taken</h4>
+            <div id="testsTaken">0</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE MODULE -->
+      <section id="module-profile" class="module">
+        <div class="module-header">
+          <h2>Profile</h2>
+        </div>
+        <div class="profile-page">
+          <div class="profile-left">
+            <div class="avatar large">JG</div>
+            <button class="secondary" onclick="logout()">Logout</button>
+          </div>
+          <div class="profile-right">
+            <div class="info-row"><strong>Name:</strong> J. Galla</div>
+            <div class="info-row"><strong>Class:</strong> 10</div>
+            <div class="info-row"><strong>Subjects:</strong> Maths, Physics, Chemistry</div>
+            <div class="info-row"><strong>Contact:</strong> +91 6301186741</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS MODULE (Modal) -->
+      <div id="notifModal" class="modal hidden">
+        <div class="modal-content">
+          <h3>Notifications</h3>
+          <div id="notifList"></div>
+          <button class="primary" onclick="closeNotif()">Close</button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottombar">
+      <button onclick="openModule('home')">Home</button>
+      <button onclick="openModule('courses')">Courses</button>
+      <button onclick="openModule('tests')">Tests</button>
+      <button onclick="openModule('materials')">Materials</button>
+      <button onclick="openModule('profile')">Profile</button>
+    </nav>
+
+  </div>
+
+  <script src="data/mockdata.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+<!-- FILE: data/mockdata.js -->
+// Mock data for modules
+const MOCK = {
+  user: {name:'J. Galla', initials:'JG', klass:10, stream:'Science', phone:'+91 6301186741'},
+  subjects: [
+    {id:'maths',title:'Mathematics',desc:'Numbers, Algebra, Geometry'},
+    {id:'physics',title:'Physics',desc:'Light, Heat, Electricity'},
+    {id:'chem',title:'Chemistry',desc:'Matter, Reactions'},
+    {id:'bio',title:'Biology',desc:'Life & Living'},
+    {id:'english',title:'English',desc:'Grammar & Comprehension'},
+    {id:'sst',title:'Social Studies',desc:'History & Civics'}
+  ],
+  courses: [
+    {id:'c6',title:'Class 6 IIT Foundation',meta:'Complete foundation course'},
+    {id:'c9',title:'Class 9 Olympiad Prep',meta:'Maths intensive'}
+  ],
+  tests: [
+    {id:'t1',title:'Maths Weekly Test',date:'2025-11-01',score:78},
+    {id:'t2',title:'Physics Unit Test',date:'2025-10-20',score:85}
+  ],
+  materials: [
+    {id:'m1',title:'Light - Notes',subject:'physics'},
+    {id:'m2',title:'Algebra Practice',subject:'maths'}
+  ],
+  assignments: [
+    {id:'a1',title:'Chapter 4 Problems',due:'2025-11-25',subject:'maths'}
+  ],
+  notifications: [
+    {id:'n1',text:'New material uploaded - Algebra'},
+    {id:'n2',text:'Test result published - Maths Weekly Test'}
+  ],
+  recent: [
+    'Scored 78% in Maths Weekly Test',
+    'New material uploaded: Light - Notes'
+  ],
+  progress: {overall:72,testsTaken:6}
+};
+
+
+<!-- FILE: js/app.js -->
+// App logic (module navigation + data binding)
+(function(){
+  const modules = ['login','home','subjects','courses','tests','materials','assignments','progress','profile'];
+  const state = {loggedIn:false,user:MOCK.user};
+
+  // utility
+  function $(id){return document.getElementById(id)}
+
+  // open module
+  window.openModule = function(name){
+    if(!state.loggedIn && name!=='login'){
+      toggleModule('login');
+      return;
+    }
+    toggleModule(name);
+    // lazy load module content
+    if(name==='home') renderHome();
+    if(name==='subjects') renderSubjects();
+    if(name==='courses') renderCourses();
+    if(name==='tests') renderTests();
+    if(name==='materials') renderMaterials();
+    if(name==='assignments') renderAssignments();
+    if(name==='progress') renderProgress();
+    if(name==='profile') renderProfile();
+  }
+
+  function toggleModule(name){
+    document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+    const el = document.getElementById('module-'+name);
+    if(el) el.classList.add('active');
+  }
+
+  // login
+  window.login = function(){
+    const u = $('loginUsername').value.trim();
+    const p = $('loginPassword').value.trim();
+    if(u==='admin' && p==='1234'){
+      state.loggedIn=true;
+      $('homeGreeting').textContent = `Hello, ${MOCK.user.name.split(' ')[0]} 👋`;
+      toggleDrawer(false);
+      openModule('home');
+    } else { alert('Invalid login — use admin / 1234'); }
+  }
+
+  window.logout = function(){
+    state.loggedIn=false; toggleModule('login');
+  }
+
+  // side drawer toggle
+  const menuBtn = $('menuBtn');
+  const side = $('sideDrawer');
+  menuBtn.addEventListener('click', ()=>toggleDrawer());
+  function toggleDrawer(force){
+    if(force===undefined) side.classList.toggle('hidden');
+    else side.classList.toggle('hidden', !force);
+  }
+
+  // notifications modal
+  const notifBtn = $('notifBtn');
+  const notifModal = $('notifModal');
+  notifBtn.addEventListener('click', ()=>openNotif());
+  window.openNotif = function(){
+    renderNotifs(); notifModal.classList.remove('hidden');
+  }
+  window.closeNotif = function(){notifModal.classList.add('hidden')}
+
+  // render functions
+  function renderHome(){
+    const recent = $('recentList'); recent.innerHTML = '';
+    MOCK.recent.forEach(r=>{ const d = document.createElement('div'); d.className='info-row'; d.textContent=r; recent.appendChild(d); });
+    $('notifBadge').classList.toggle('hidden', MOCK.notifications.length===0);
+  }
+
+  window.filterSubjects = function(q){
+    const grid = $('subjectsGrid'); grid.innerHTML='';
+    const list = MOCK.subjects.filter(s=>s.title.toLowerCase().includes(q.toLowerCase()));
+    list.forEach(s=>grid.appendChild(makeSubjectCard(s)));
+  }
+
+  function renderSubjects(){
+    const grid = $('subjectsGrid'); grid.innerHTML='';
+    MOCK.subjects.forEach(s=>grid.appendChild(makeSubjectCard(s)));
+  }
+  function makeSubjectCard(s){
+    const el = document.createElement('div'); el.className='subject-card';
+    el.innerHTML = `<h4>${s.title}</h4><div class='muted'>${s.desc}</div><div style='margin-top:8px'><button class='primary' onclick="openSubject('${s.id}')">Open</button></div>`;
+    return el;
+  }
+
+  window.openSubject = function(id){
+    alert('Open subject: '+id+' (you can extend this to show chapters)');
+  }
+
+  function renderCourses(){
+    const list = $('coursesList'); list.innerHTML='';
+    MOCK.courses.forEach(c=>{
+      const d=document.createElement('div'); d.className='info-row'; d.innerHTML=`<strong>${c.title}</strong><div class='muted'>${c.meta}</div>`; list.appendChild(d);
+    });
+  }
+  function renderTests(){
+    const list = $('testsList'); list.innerHTML='';
+    MOCK.tests.forEach(t=>{ const d=document.createElement('div'); d.className='info-row'; d.innerHTML=`<strong>${t.title}</strong><div class='muted'>Date: ${t.date} • Score: ${t.score}%</div>`; list.appendChild(d); });
+  }
+  function renderMaterials(){
+    const list = $('materialsList'); list.innerHTML='';
+    MOCK.materials.forEach(m=>{ const d=document.createElement('div'); d.className='info-row'; d.innerHTML=`<strong>${m.title}</strong><div class='muted'>Subject: ${m.subject}</div>`; list.appendChild(d); });
+  }
+  function renderAssignments(){
+    const list = $('assignmentsList'); list.innerHTML='';
+    MOCK.assignments.forEach(a=>{ const d=document.createElement('div'); d.className='info-row'; d.innerHTML=`<strong>${a.title}</strong><div class='muted'>Due: ${a.due}</div>`; list.appendChild(d); });
+  }
+  function renderProgress(){
+    $('overallMeter').style.width = MOCK.progress.overall + '%';
+    $('overallPercentage').textContent = MOCK.progress.overall + '%';
+    $('testsTaken').textContent = MOCK.progress.testsTaken;
+  }
+  function renderProfile(){
+    // profile module could be extended to edit details
+  }
+
+  function renderNotifs(){
+    const list = $('notifList'); list.innerHTML='';
+    MOCK.notifications.forEach(n=>{ const d=document.createElement('div'); d.className='info-row'; d.textContent=n.text; list.appendChild(d); });
+  }
+
+  // initial route
+  toggleModule('login');
+})();
