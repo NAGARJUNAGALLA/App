@@ -127,3 +127,14 @@
   // initial route
   toggleModule('login');
 })();
+// NOTIFICATION HANDLER
+const notificationPopup = document.getElementById('notificationPopup');
+const closeNotification = document.getElementById('closeNotification');
+
+
+if (closeNotification && notificationPopup) {
+closeNotification.addEventListener('click', () => {
+notificationPopup.classList.remove('show');
+});
+}
+// END NOTIFICATION HANDLER
